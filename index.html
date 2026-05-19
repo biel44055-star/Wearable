@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wearable Sustain</title>
+
+  <!--
+    - custom css link 
+  -->
+  <link rel="stylesheet" href="./assets/css/foodhub.css">
+  <link rel="stylesheet" href="./assets/css/media_query.css">
+
+  <!--
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Monoton&family=Rubik:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+
+  <style>
+    /* Custom order section - tambahan tanpa mengubah layout utama */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .custom-link-btn {
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .custom-order {
+      padding: 85px 0;
+      position: relative;
+    }
+
+
+    .custom-order > .section-title,
+    .custom-order > .section-text {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .custom-order > .section-text {
+      max-width: 760px;
+    }
+
+    .custom-order::before {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      right: 0;
+      top: 55px;
+      border-radius: 50%;
+      background: rgba(255, 143, 44, 0.10);
+      z-index: -1;
+    }
+
+    .custom-order-wrapper {
+      margin-top: 35px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      align-items: start;
+    }
+
+    .custom-form-box,
+    .custom-result-box {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: 0 14px 42px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(255, 143, 44, 0.12);
+    }
+
+    .custom-form-box {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .custom-form-box::after {
+      content: "Custom";
+      position: absolute;
+      right: -22px;
+      top: 18px;
+      padding: 8px 36px;
+      background: #ff8f2c;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      transform: rotate(35deg);
+      letter-spacing: 1px;
+    }
+
+    .custom-form-title {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      color: #1f1f1f;
+    }
+
+    .custom-form-desc {
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 22px;
+      color: #555555;
+    }
+
+    .custom-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .custom-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .custom-form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .custom-form-group label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #333333;
+    }
+
+    .custom-form-group input,
+    .custom-form-group select,
+    .custom-form-group textarea {
+      width: 100%;
+      border: 1px solid #dddddd;
+      border-radius: 14px;
+      padding: 13px 15px;
+      font-family: 'Rubik', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: 0.2s ease;
+      background: #ffffff;
+    }
+
+    .custom-form-group textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .custom-form-group input:focus,
+    .custom-form-group select:focus,
+    .custom-form-group textarea:focus {
+      border-color: #ff8f2c;
+      box-shadow: 0 0 0 3px rgba(255, 143, 44, 0.12);
+    }
+
+    .photo-upload-box {
+      border: 1.5px dashed #ffb36d;
+      background: #fff8f1;
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .photo-upload-box input[type="file"] {
+      border: none;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+    }
+
+    .photo-upload-help {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #777777;
+      margin-top: 8px;
+    }
+
+    .photo-preview-grid,
+    .order-photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(82px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .photo-preview-item,
+    .order-photo-item {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid #eeeeee;
+      background: #ffffff;
+      aspect-ratio: 1 / 1;
+    }
+
+    .photo-preview-item img,
+    .order-photo-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .custom-action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .custom-note {
+      margin-top: 14px;
+      font-size: 13px;
+      color: #777777;
+      line-height: 1.6;
+    }
+
+    .saved-custom-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 18px;
+      max-height: 780px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    .saved-custom-list::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .saved-custom-list::-webkit-scrollbar-thumb {
+      background: #ff8f2c;
+      border-radius: 99px;
+    }
+
+    .saved-custom-card {
+      border: 1px solid #eeeeee;
+      border-radius: 18px;
+      padding: 18px;
+      background: linear-gradient(180deg, #ffffff 0%, #fffaf6 100%);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.045);
+    }
+
+    .saved-custom-card h4 {
+      font-size: 17px;
+      margin-bottom: 8px;
+      color: #1f1f1f;
+    }
+
+    .saved-custom-card p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #555555;
+      margin-bottom: 4px;
+    }
+
+    .saved-custom-card .custom-card-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .btn-small-custom {
+      border: none;
+      border-radius: 11px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .btn-print-custom {
+      background: #ff8f2c;
+      color: #ffffff;
+    }
+
+    .btn-print-custom:hover {
+      background: #e77412;
+    }
+
+    .btn-delete-custom {
+      background: #eeeeee;
+      color: #333333;
+    }
+
+    .btn-delete-custom:hover {
+      background: #333333;
+      color: #ffffff;
+    }
+
+    .empty-custom-data {
+      font-size: 14px;
+      color: #777777;
+      line-height: 1.7;
+      margin-top: 12px;
+      padding: 22px;
+      background: #fff8f1;
+      border-radius: 16px;
+      border: 1px dashed #ffb36d;
+    }
+
+    @media (max-width: 900px) {
+      .custom-order-wrapper {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .custom-form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .custom-form-box,
+      .custom-result-box {
+        padding: 22px;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <!--
+    - main container
+  -->
+
+  <div class="container">
+
+    <!--
+      - #HEADER
+    -->
+
+    <header>
+
+      <nav class="navbar">
+
+        <div class="navbar-wrapper">
+
+          <a href="#">
+            <img src="./assets/images/Wst. Loogo 2.png" alt="logo" width="90">
+          </a>
+
+          <ul class="navbar-nav">
+
+            <li>
+              <a href="#home" class="nav-link">Home</a>
+            </li>
+
+            <li>
+              <a href="#about" class="nav-link">About</a>
+            </li>
+
+            <li>
+              <a href="#services" class="nav-link">Advantages</a>
+            </li>
+
+            <li>
+              <a href="#menu" class="nav-link">Our Collection</a>
+            </li>
+
+            <li>
+              <a href="#custom-order" class="nav-link">Custom Order</a>
+            </li>
+
+          </ul>
+
+          <div class="navbar-btn-group">
+
+            <button class="shopping-cart-btn">
+              <img src="./assets/images/cart.svg" alt="shopping cart icon" width="18">
+            </button>
+
+            <button class="menu-toggle-btn">
+              <span class="line one"></span>
+              <span class="line two"></span>
+              <span class="line three"></span>
+            </button>
+
+          </div>
+
+        </div>
+
+      </nav>
+
+      <div class="cart-box">
+
+        <ul class="cart-box-ul">
+
+          <h4 class="cart-h4">Pesanan Anda</h4>
+
+          <li>
+            <a href="#" class="cart-item">
+              <div class="img-box">
+                <img src="./assets/images/Jeans1.jpg" alt="Coming Soon" class="product-img" width="50" height="50"
+                  loading="lazy">
+              </div>
+
+              <h5 class="product-name">Levis Blue Jeans</h5>
+              <p class="product-price">
+                <span class="small">Rp </span>80K
+              </p>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" class="cart-item">
+              <div class="img-box">
+                <img src="./assets/images/Sepa1.jpg" alt="Coming Soon" class="product-img" width="50" height="50"
+                  loading="lazy">
+              </div>
+
+              <h5 class="product-name">Adidas Response Lt M</h5>
+              <p class="product-price">
+                <span class="small">Rp </span>250K
+              </p>
+            </a>
+          </li>
+
+              </p>
+            </a>
+          </li>
+
+        </ul>
+
+        <div class="cart-btn-group">
+          <button class="btn btn-secondary"href = "https://www.instagram.com/tamper.co_?igsh=MTZsM2hraWExcXJq">View order</button>
+          <button class="btn btn-primary"href = "https://www.instagram.com/tamper.co_?igsh=MTZsM2hraWExcXJq">Checkout</button>
+          <a href="https://www.instagram.com/tamper.co_?igsh=MTZsM2hraWExcXJq">Instagram</a>
+        </div>
+
+      </div>
+
+    </header>
+
+
+
+
+
+    <main>
+
+      <!--
+        - #HOME SECTION
+      -->
+
+      <section class="home" id="home">
+
+        <div class="home-left">
+
+          <p class="home-subtext"></p>
+
+          <h1 class="main-heading">Selamat Datang Di Website Budidaya Barang Thrift</h1>
+
+          <p class="home-text">
+            Disini Kami Memproduksi Beberapa Jenis Barang Fashionable Yang Keren
+          </p>
+
+          <div class="btn-group">
+
+            <button class="btn btn-primary btn-icon">
+              <img src="./assets/images/MenCloth.png" alt="menu icon">
+              Our Collection
+            </button>
+
+            <button class="btn btn-secondary btn-icon">
+              <img src="./assets/images/arrow.svg" alt="menu icon">
+              About us
+            </button>
+
+            <a href="#custom-order" class="btn btn-primary btn-icon custom-link-btn">
+              <img src="./assets/images/MenCloth.png" alt="custom order icon">
+              Custom Order
+            </a>
+
+          </div>
+
+        </div>
+
+        <div class="home-right">
+
+          <img src="./assets/images/Baju1.jpg" alt="Baju" class="food-img food-1" width="200" loading="lazy">
+          <img src="./assets/images/Celana2.jpg" alt="Celana" class="food-img food-2" width="200" loading="lazy">
+          <img src="./assets/images/Vermak3.jpg" alt="Vermak" class="food-img food-3" width="200" loading="lazy">
+
+
+          <img src="./assets/images/circle.svg" alt="circle shape" class="shape shape-1" width="25">
+          <img src="./assets/images/circle.svg" alt="circle shape" class="shape shape-2" width="15">
+          <img src="./assets/images/circle.svg" alt="circle shape" class="shape shape-3" width="30">
+          <img src="./assets/images/ring.svg" alt="ring shape" class="shape shape-4" width="60">
+          <img src="./assets/images/ring.svg" alt="ring shape" class="shape shape-5" width="40">
+
+        </div>
+
+      </section>
+
+
+
+
+
+      <!--
+        - #ABOUT SECTION
+      -->
+
+      <section class="about" id="about">
+
+        <div class="about-left">
+
+          <div class="img-box">
+            <img src="./assets/images/Sriwijaya.jpg" alt="about image" class="about-img" width="250">
+          </div>
+
+          <div class="abs-content-box">
+            <div class="dotted-border">
+              <p class="text-md">Sriwijaya Pride</p>
+            </div>
+          </div>
+
+          <img src="./assets/images/circle.svg" alt="circle shape" class="shape shape-6" width="20">
+          <img src="./assets/images/circle.svg" alt="circle shape" class="shape shape-7" width="30">
+          <img src="./assets/images/ring.svg" alt="ring shape" class="shape shape-8" width="35">
+          <img src="./assets/images/ring.svg" alt="ring shape" class="shape shape-9" width="80">
+
+        </div>
+
+        <div class="about-right">
+
+          <h2 class="section-title">Kami Dari Tim WiDiNa Dengan Bangga Mengenalkan Inovasi Kami "Wearable Sustain</h2>
+
+          <p class="section-text">
+            Sebelum itu, tahun lalu terdapat banyaknya kasus pakaian bekas di Indonesia yang dimport dari luar negeri secara ilegal, 
+            namun kemudian dimusnahkan dengan cara dibakar. Dikhawatirkan akan menimbulkan polusi udara yang akan memperburuk kondisi 
+            udara di Indonesia seperti halnya kota Jakarta yang Kemarin tengah menyandang peringkat pertama dengan udara terkotor di 
+            seluruh dunia, Namun apabila tidak dimusnahkan juga akan menimbulkan penumpukan sampah tekstil yang sangat besar. 
+            Tentu ini menjadi masalah, bagaimana cara menyingkirkan pakaian" bekas yang kian menumpuk ini? Nah disinilah kami berperan, 
+            Wearable Sustain sebagai sebuah usaha yang mengusung konsep sustainability melalui reworked clothing. 
+            Dengan memanfaatkan pakaian
+            bekas atau thrift based sebagai salah satu langkah implementasi Sustainable Fashion dan SDGs Zero Waste di Indonesia.
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!--
+        - #SERVICES SECTION
+      -->
+      <h2 class="section-title">Kelebihan Produk Kami</h2>
+
+      <section class="services" id="services">
+        
+        <div class="service-card">
+          
+      
+          <p class="card-number">01</p>
+
+          <h3 class="card-heading">Ramah Lingkungan</h3>
+
+          <p class="card-text">
+            Produk thrift yang di-reworked membantu mengurangi limbah tekstil dan polusi udara, sejalan dengan prinsip zero 
+            waste dan upaya mengurangi emisi karbon dari pembakaran pakaian bekas.
+          </p>
+
+        </div>
+
+        <div class="service-card">
+
+          <p class="card-number">02</p>
+
+          <h3 class="card-heading">Unik Dan Eksklusif</h3>
+
+          <p class="card-text">
+            Barang thrift yang diolah kembali menghasilkan produk yang memiliki nilai eksklusif dan desain 
+            yang tidak ditemukan di pasar massal, sehingga menarik minat konsumen yang mencari gaya unik dan personal.
+          </p>
+
+        </div>
+
+        <div class="service-card">
+
+          <p class="card-number">03</p>
+
+          <h3 class="card-heading">Terjangkau Namun Berkualitas</h3>
+
+          <p class="card-text">
+            Dengan menggunakan bahan dari pakaian bekas berkualitas, harga produk tetap terjangkau namun dengan kualitas tinggi, 
+            menjadikannya pilihan yang ekonomis sekaligus berkelanjutan.
+          </p>
+
+        </div>
+
+        <div class="service-card">
+
+          <p class="card-number">04</p>
+
+          <h3 class="card-heading">Mendukung Ekonomi Sirkular</h3>
+
+          <p class="card-text">
+            Proses pengolahan ulang barang thrift memperpanjang siklus hidup pakaian dan mendukung model ekonomi sirkular, 
+            di mana barang yang sudah tidak digunakan bisa memiliki nilai baru.
+          </p>
+
+        </div>
+
+        <div class="service-card">
+
+          <p class="card-number">05</p>
+
+          <h3 class="card-heading">Mengintegrasikan Prinsip SDGs</h3>
+
+          <p class="card-text">
+            Produk ini secara langsung mendukung Sustainable Development Goals (SDGs), 
+            khususnya terkait konsumsi dan produksi yang berkelanjutan serta pengurangan sampah (SDG 12).
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!--
+        - #PRODUCT SECTION
+      -->
+
+      
+      <!--
+        - #PRODUCT SECTION
+      -->
+
+      <section class="product" id="menu">
+        <h2 class="section-title">Beberapa Produk Yang Kami Sediakan</h2>
+
+        <p class="section-text">
+          Temukan koleksi lengkap yang kami rancang untuk kenyamanan dan gaya. Kami menyediakan berbagai 
+          pilihan jenis pakaian fasionable yang sesuai untuk setiap kesempatan, mulai dari kasual hingga formal. Dengan bahan
+          berkualitas dan desain modern, Anda akan menemukan produk yang tidak hanya bergaya tetapi juga tahan lama. Pilihan kami meliputi 
+          sepatu olahraga, sneakers, sepatu formal, serta celana jeans, chino, dan lainnya untuk melengkapi penampilan Anda.
+        </p>
+
+        <div class="products-grid">
+
+          <a href="#">
+
+            <div class="product-card">
+
+              <div class="img-box">
+                <img src="./assets/images/Jeans6.jpg" alt="product image" class="product-img" width="200" loading="lazy">
+              </div>
+
+              <div class="product-content">
+
+                <div class="wrapper">
+                  <h3 class="product-name">Levi's Grey Ripped</h3>
+
+                  <p class="product-price">
+                    <span class="small"></span>70K
+                  </p>
+                </div>
+
+                <p class="product-text">
+                  SZ  : 30
+                  <br>
+                  LP  : 80 CM
+                  <br>
+                  PJ  : 100 CM
+                  <br>
+                  OL  : 19 CM
+                  <br>
+                  90% Good Condition
+                </p>
+
+                <div class="product-rating">
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                </div>
+
+              </div>
+
+            </div>
+
+          </a>
+
+          <a href="#">
+
+            <div class="product-card">
+
+              <div class="img-box">
+                <img src="./assets/images/Jeans1.jpg" alt="product image" class="product-img" width="200" loading="lazy">
+              </div>
+
+              <div class="product-content">
+
+                <div class="wrapper">
+                  <h3 class="product-name">Levis Blue Jeans</h3>
+
+                  <p class="product-price">
+                    <span class="small"></span>80K
+                  </p>
+                </div>
+
+                <p class="product-text">
+                  SZ  : 28 CM
+                  <br>
+                  LP  : 70 CM
+                  <br>
+                  PJ  : 95 CM
+                  <br>
+                  OL  : 15 CM
+                  <br>
+                  90% Good Condition
+                </p>
+
+                <div class="product-rating">
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                </div>
+
+              </div>
+
+            </div>
+
+          </a>
+
+          <a href="#">
+
+            <div class="product-card">
+
+              <div class="img-box">
+                <img src="./assets/images/Jeans5.jpg" alt="product image" class="product-img" width="200" loading="lazy">
+
+
+                <div class="wrapper">
+                  <h3 class="product-name">Black Bleach Jeans</h3>
+
+                  <p class="product-price">
+                    <span class="small"></span>100K
+                  </p>
+                </div>
+
+                <p class="product-text">
+                  SZ  : 27
+                  <br>
+                  LP  : 70 CM
+                  <br>
+                  PJ  : 84 CM
+                  <br>
+                  OL  : 12 CM
+                  <br>
+                  100% Good Conditon
+                </p>
+
+                <div class="product-rating">
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                </div>
+
+              </div>
+
+            </div>
+
+          </a>
+
+          <a href="#">
+
+            <div class="product-card">
+
+              <div class="img-box">
+                <img src="./assets/images/Jeans2.jpg" alt="product image" class="product-img" width="200" loading="lazy">
+
+
+                <div class="wrapper">
+                  <h3 class="product-name">Tie Dye Jeans</h3>
+
+                  <p class="product-price">
+                    <span class="small"></span>100K
+                  </p>
+                </div>
+
+                <p class="product-text">
+                  SZ  : 28 
+                  <br>
+                  LP  : 75 CM
+                  <br>
+                  PJ  : 102 CM
+                  <br>
+                  OL  : 12 CM
+                </p>
+
+                <div class="product-rating">
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                </div>
+
+              </div>
+
+            </div>
+
+          </a>
+
+          <a href="#">
+
+            <div class="product-card">
+
+              <div class="img-box">
+                <img src="./assets/images/Jeans4.jpg" alt="product image" class="product-img" width="200" loading="lazy">
+
+              </div>
+
+              <div class="product-content">
+
+                <div class="wrapper">
+                  <h3 class="product-name">Black Uniqlo</h3>
+
+                  <p class="product-price">
+                    <span class="small"></span>80K
+                  </p>
+                </div>
+
+                <p class="product-text">
+                  SZ  : 27
+                  <br>
+                  LP  : 68 CM
+                  <br>
+                  PJ  : 92 CM
+                  <br>
+                  OL  : 16 CM
+                  <br>
+                  90% Good Condition
+                </p>
+
+                <div class="product-rating">
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                </div>
+
+              </div>
+
+            </div>
+
+          </a>
+
+          <a href="#">
+
+            <div class="product-card">
+
+              <div class="img-box">
+                <img src="./assets/images/Jeans3.jpg" alt="product image" class="product-img" width="200" loading="lazy">
+              </div>
+
+              <div class="product-content">
+
+                <div class="wrapper">
+                  <h3 class="product-name">White Stripe Jeans</h3>
+
+                  <p class="product-price">
+                    <span class="small"></span>80K
+                  </p>
+                </div>
+
+                <p class="product-text">
+                  SZ  : 28
+                  <br>
+                  LP  : 72 CM
+                  <br>
+                  PJ  : 93 CM
+                  <br>
+                  OL  : 15 CM
+                  <br>
+                  95% Good Condition
+                </p>
+
+                <div class="product-rating">
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                </div>
+
+              </div>
+
+            </div>
+
+          </a>
+
+        </div>
+
+      </section>
+
+      <!--
+        - #CUSTOM ORDER SECTION
+      -->
+
+      <section class="custom-order" id="custom-order">
+        <h2 class="section-title">Form Custom Baju & Perlengkapan Fashion</h2>
+
+        <p class="section-text">
+          Isi form berikut untuk mengajukan pesanan custom seperti baju, celana, sepatu, tas, atau perlengkapan fashion lainnya.
+          Setelah data dikirim, pesanan akan tersimpan di halaman ini dan bisa langsung dicetak sebagai bukti pemesanan.
+        </p>
+
+        <div class="custom-order-wrapper">
+          <div class="custom-form-box">
+            <h3 class="custom-form-title">Data Pesanan Custom</h3>
+            <p class="custom-form-desc">
+              Lengkapi informasi sesuai kebutuhan custom. Data akan tersimpan di browser perangkat yang digunakan.
+            </p>
+
+            <form id="customOrderForm">
+              <div class="custom-form-grid">
+                <div class="custom-form-group">
+                  <label for="customerName">Nama Pemesan</label>
+                  <input type="text" id="customerName" name="customerName" placeholder="Masukkan nama" required>
+                </div>
+
+                <div class="custom-form-group">
+                  <label for="customerPhone">No. WhatsApp</label>
+                  <input type="tel" id="customerPhone" name="customerPhone" placeholder="Contoh: 08xxxxxxxxxx" required>
+                </div>
+
+                <div class="custom-form-group">
+                  <label for="customItem">Jenis Fashion</label>
+                  <select id="customItem" name="customItem" required>
+                    <option value="">Pilih jenis fashion</option>
+                    <option value="Baju / Kaos">Baju / Kaos</option>
+                    <option value="Kemeja">Kemeja</option>
+                    <option value="Celana">Celana</option>
+                    <option value="Jaket / Hoodie">Jaket / Hoodie</option>
+                    <option value="Sepatu">Sepatu</option>
+                    <option value="Tas">Tas</option>
+                    <option value="Aksesoris Fashion">Aksesoris Fashion</option>
+                    <option value="Lainnya">Lainnya</option>
+                  </select>
+                </div>
+
+                <div class="custom-form-group">
+                  <label for="customSize">Ukuran</label>
+                  <input type="text" id="customSize" name="customSize" placeholder="Contoh: M / L / 30 / 42" required>
+                </div>
+
+                <div class="custom-form-group">
+                  <label for="customColor">Warna Dominan</label>
+                  <input type="text" id="customColor" name="customColor" placeholder="Contoh: Hitam, Cream, Denim" required>
+                </div>
+
+                <div class="custom-form-group">
+                  <label for="customDeadline">Tanggal Dibutuhkan</label>
+                  <input type="date" id="customDeadline" name="customDeadline" required>
+                </div>
+
+                <div class="custom-form-group full">
+                  <label for="customConcept">Konsep / Desain Custom</label>
+                  <textarea id="customConcept" name="customConcept" placeholder="Contoh: rework denim dengan patch kain batik, model oversized, tambahan bordir nama, dan warna vintage." required></textarea>
+                </div>
+
+                <div class="custom-form-group full">
+                  <label for="customerAddress">Alamat / Catatan Tambahan</label>
+                  <textarea id="customerAddress" name="customerAddress" placeholder="Masukkan alamat atau catatan tambahan untuk pesanan." required></textarea>
+                </div>
+
+                <div class="custom-form-group full photo-upload-box">
+                  <label for="customPhotos">Foto Referensi Baju / Fashion</label>
+                  <input type="file" id="customPhotos" name="customPhotos" accept="image/*" multiple>
+                  <p class="photo-upload-help">
+                    Bisa memasukkan beberapa foto sekaligus. Disarankan maksimal 5 foto agar data tetap ringan saat disimpan dan dicetak.
+                  </p>
+                  <div id="photoPreview" class="photo-preview-grid"></div>
+                </div>
+              </div>
+
+              <div class="custom-action-row">
+                <button type="submit" class="btn btn-primary">Simpan Pesanan</button>
+                <button type="reset" class="btn btn-secondary">Reset Form</button>
+              </div>
+
+              <p class="custom-note">
+                Catatan: karena website ini menggunakan Vercel/static hosting, penyimpanan memakai localStorage browser. Data akan tetap tampil selama cache browser tidak dihapus.
+              </p>
+            </form>
+          </div>
+
+          <div class="custom-result-box">
+            <h3 class="custom-form-title">Pesanan Custom Tersimpan</h3>
+            <p class="custom-form-desc">
+              Data pesanan yang sudah diisi akan muncul di bawah ini. Klik tombol cetak untuk mencetak bukti pesanan secara langsung.
+            </p>
+
+            <div class="custom-action-row">
+              <button type="button" class="btn btn-primary" id="printAllCustomOrders">Cetak Semua Pesanan</button>
+              <button type="button" class="btn btn-secondary" id="clearAllCustomOrders">Hapus Semua</button>
+            </div>
+
+            <div id="savedCustomOrders" class="saved-custom-list"></div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!--
+    - custom js link
+  -->
+  <script src="./assets/js/foodhub.js"></script>
+
+  <!--
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+
+  <script>
+    // Fitur form custom Wearable Sustain dengan upload beberapa foto
+    const customOrderForm = document.getElementById('customOrderForm');
+    const savedCustomOrders = document.getElementById('savedCustomOrders');
+    const printAllCustomOrders = document.getElementById('printAllCustomOrders');
+    const clearAllCustomOrders = document.getElementById('clearAllCustomOrders');
+    const customPhotosInput = document.getElementById('customPhotos');
+    const photoPreview = document.getElementById('photoPreview');
+    const customOrderStorageKey = 'wearableSustainCustomOrdersWithPhotos';
+    const maxPhotoCount = 5;
+
+    function getCustomOrders() {
+      return JSON.parse(localStorage.getItem(customOrderStorageKey)) || [];
+    }
+
+    function saveCustomOrders(orders) {
+      localStorage.setItem(customOrderStorageKey, JSON.stringify(orders));
+    }
+
+    function escapeHtml(text) {
+      return String(text || '-')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function formatDate(dateValue) {
+      if (!dateValue) return '-';
+      const date = new Date(dateValue);
+      if (Number.isNaN(date.getTime())) return dateValue;
+
+      return date.toLocaleDateString('id-ID', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+      });
+    }
+
+    function compressImage(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+          const image = new Image();
+
+          image.onload = function() {
+            const canvas = document.createElement('canvas');
+            const maxWidth = 900;
+            const scale = Math.min(1, maxWidth / image.width);
+            canvas.width = Math.round(image.width * scale);
+            canvas.height = Math.round(image.height * scale);
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+            resolve({
+              name: file.name,
+              dataUrl: canvas.toDataURL('image/jpeg', 0.75)
+            });
+          };
+
+          image.onerror = reject;
+          image.src = event.target.result;
+        };
+
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function readSelectedPhotos() {
+      if (!customPhotosInput || !customPhotosInput.files.length) return [];
+
+      const files = Array.from(customPhotosInput.files)
+        .filter(file => file.type.startsWith('image/'))
+        .slice(0, maxPhotoCount);
+
+      const photos = [];
+
+      for (const file of files) {
+        try {
+          const compressed = await compressImage(file);
+          photos.push(compressed);
+        } catch (error) {
+          console.warn('Foto gagal diproses:', file.name, error);
+        }
+      }
+
+      return photos;
+    }
+
+    function renderPhotoPreview() {
+      if (!photoPreview || !customPhotosInput) return;
+
+      const files = Array.from(customPhotosInput.files || [])
+        .filter(file => file.type.startsWith('image/'))
+        .slice(0, maxPhotoCount);
+
+      if (!files.length) {
+        photoPreview.innerHTML = '';
+        return;
+      }
+
+      photoPreview.innerHTML = files.map(file => `
+        <div class="photo-preview-item">
+          <img src="${URL.createObjectURL(file)}" alt="Preview foto custom">
+        </div>
+      `).join('');
+    }
+
+    function renderOrderPhotos(photos) {
+      if (!photos || !photos.length) return '<p><strong>Foto:</strong> Tidak ada foto yang dilampirkan.</p>';
+
+      const photoItems = photos.map(photo => `
+        <div class="order-photo-item">
+          <img src="${photo.dataUrl}" alt="${escapeHtml(photo.name)}">
+        </div>
+      `).join('');
+
+      return `
+        <p><strong>Foto Referensi:</strong></p>
+        <div class="order-photo-grid">${photoItems}</div>
+      `;
+    }
+
+    function renderCustomOrders() {
+      if (!savedCustomOrders) return;
+
+      const orders = getCustomOrders();
+
+      if (orders.length === 0) {
+        savedCustomOrders.innerHTML = '<p class="empty-custom-data">Belum ada data pesanan custom yang tersimpan.</p>';
+        return;
+      }
+
+      savedCustomOrders.innerHTML = orders.map((order, index) => `
+        <div class="saved-custom-card">
+          <h4>${escapeHtml(order.customItem)} - ${escapeHtml(order.customerName)}</h4>
+          <p><strong>No. WhatsApp:</strong> ${escapeHtml(order.customerPhone)}</p>
+          <p><strong>Ukuran:</strong> ${escapeHtml(order.customSize)}</p>
+          <p><strong>Warna:</strong> ${escapeHtml(order.customColor)}</p>
+          <p><strong>Tanggal Dibutuhkan:</strong> ${formatDate(order.customDeadline)}</p>
+          <p><strong>Konsep:</strong> ${escapeHtml(order.customConcept)}</p>
+          <p><strong>Alamat/Catatan:</strong> ${escapeHtml(order.customerAddress)}</p>
+          <p><strong>Waktu Input:</strong> ${escapeHtml(order.createdAt)}</p>
+          ${renderOrderPhotos(order.photos)}
+          <div class="custom-card-actions">
+            <button type="button" class="btn-small-custom btn-print-custom" onclick="printCustomOrder(${index})">Cetak Pesanan</button>
+            <button type="button" class="btn-small-custom btn-delete-custom" onclick="deleteCustomOrder(${index})">Hapus</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function buildPrintPhotos(photos) {
+      if (!photos || !photos.length) {
+        return '<p class="no-photo">Tidak ada foto referensi yang dilampirkan.</p>';
+      }
+
+      return `
+        <div class="print-photo-grid">
+          ${photos.map(photo => `
+            <div class="print-photo-item">
+              <img src="${photo.dataUrl}" alt="${escapeHtml(photo.name)}">
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function buildPrintContent(orders, title) {
+      const orderCards = orders.map((order, index) => `
+        <div class="print-card">
+          <h2>Pesanan Custom #${index + 1}</h2>
+          <table>
+            <tr><td>Nama Pemesan</td><td>${escapeHtml(order.customerName)}</td></tr>
+            <tr><td>No. WhatsApp</td><td>${escapeHtml(order.customerPhone)}</td></tr>
+            <tr><td>Jenis Fashion</td><td>${escapeHtml(order.customItem)}</td></tr>
+            <tr><td>Ukuran</td><td>${escapeHtml(order.customSize)}</td></tr>
+            <tr><td>Warna Dominan</td><td>${escapeHtml(order.customColor)}</td></tr>
+            <tr><td>Tanggal Dibutuhkan</td><td>${formatDate(order.customDeadline)}</td></tr>
+            <tr><td>Konsep / Desain</td><td>${escapeHtml(order.customConcept)}</td></tr>
+            <tr><td>Alamat / Catatan</td><td>${escapeHtml(order.customerAddress)}</td></tr>
+            <tr><td>Waktu Input</td><td>${escapeHtml(order.createdAt)}</td></tr>
+          </table>
+
+          <h3 class="photo-title">Foto Referensi Custom</h3>
+          ${buildPrintPhotos(order.photos)}
+
+          <div class="signature">
+            <div>
+              <p>Pemesan</p>
+              <p class="line">${escapeHtml(order.customerName)}</p>
+            </div>
+            <div>
+              <p>Admin Wearable Sustain</p>
+              <p class="line">nabiel arinaullah</p>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      return `
+        <!DOCTYPE html>
+        <html lang="id">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>${escapeHtml(title)}</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 30px; color: #222; }
+            h1 { text-align: center; margin-bottom: 5px; }
+            .brand { text-align: center; margin-bottom: 30px; color: #666; }
+            .print-card { border: 1px solid #ddd; border-radius: 12px; padding: 20px; margin-bottom: 28px; page-break-inside: avoid; }
+            .print-card h2 { margin-top: 0; font-size: 20px; }
+            table { width: 100%; border-collapse: collapse; }
+            td { border: 1px solid #ddd; padding: 10px; vertical-align: top; }
+            td:first-child { width: 30%; font-weight: bold; background: #f7f7f7; }
+            .photo-title { font-size: 16px; margin: 22px 0 12px; }
+            .print-photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 22px; }
+            .print-photo-item { border: 1px solid #ddd; border-radius: 10px; overflow: hidden; height: 180px; }
+            .print-photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+            .no-photo { color: #777; font-style: italic; }
+            .signature { margin-top: 48px; display: flex; justify-content: space-between; gap: 40px; page-break-inside: avoid; }
+            .signature div { width: 45%; text-align: center; }
+            .line { margin-top: 76px; border-top: 1px solid #222; padding-top: 8px; font-weight: bold; text-transform: capitalize; }
+            @media print {
+              body { padding: 0; }
+              .print-card { break-inside: avoid; }
+              .print-photo-item { height: 155px; }
+            }
+          </style>
+        </head>
+        <body>
+          <h1>Wearable Sustain</h1>
+          <p class="brand">Bukti Pesanan Custom Baju & Perlengkapan Fashion</p>
+          ${orderCards}
+          <script>
+            window.onload = function() {
+              setTimeout(function() {
+                window.print();
+              }, 500);
+            };
+          <\/script>
+        </body>
+        </html>
+      `;
+    }
+
+    function openPrintWindow(orders, title) {
+      if (!orders.length) {
+        alert('Belum ada data pesanan custom yang bisa dicetak.');
+        return;
+      }
+
+      const printWindow = window.open('', '_blank');
+      printWindow.document.open();
+      printWindow.document.write(buildPrintContent(orders, title));
+      printWindow.document.close();
+    }
+
+    function printCustomOrder(index) {
+      const orders = getCustomOrders();
+      if (!orders[index]) return;
+      openPrintWindow([orders[index]], 'Cetak Pesanan Custom');
+    }
+
+    function deleteCustomOrder(index) {
+      if (!confirm('Apakah data pesanan ini ingin dihapus?')) return;
+
+      const orders = getCustomOrders();
+      orders.splice(index, 1);
+      saveCustomOrders(orders);
+      renderCustomOrders();
+    }
+
+    if (customPhotosInput) {
+      customPhotosInput.addEventListener('change', function() {
+        if (customPhotosInput.files.length > maxPhotoCount) {
+          alert('Maksimal foto yang disarankan adalah 5 foto. Foto yang disimpan hanya 5 foto pertama.');
+        }
+
+        renderPhotoPreview();
+      });
+    }
+
+    if (customOrderForm) {
+      customOrderForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const submitButton = customOrderForm.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton ? submitButton.textContent : '';
+
+        if (submitButton) {
+          submitButton.disabled = true;
+          submitButton.textContent = 'Menyimpan...';
+        }
+
+        try {
+          const formData = new FormData(customOrderForm);
+          const photos = await readSelectedPhotos();
+
+          const newOrder = {
+            customerName: formData.get('customerName'),
+            customerPhone: formData.get('customerPhone'),
+            customItem: formData.get('customItem'),
+            customSize: formData.get('customSize'),
+            customColor: formData.get('customColor'),
+            customDeadline: formData.get('customDeadline'),
+            customConcept: formData.get('customConcept'),
+            customerAddress: formData.get('customerAddress'),
+            photos: photos,
+            createdAt: new Date().toLocaleString('id-ID')
+          };
+
+          const orders = getCustomOrders();
+          orders.unshift(newOrder);
+          saveCustomOrders(orders);
+          renderCustomOrders();
+          customOrderForm.reset();
+          if (photoPreview) photoPreview.innerHTML = '';
+          alert('Data pesanan custom berhasil disimpan. Foto referensi juga sudah tersimpan dan siap dicetak.');
+        } catch (error) {
+          alert('Data gagal disimpan. Coba gunakan foto dengan ukuran lebih kecil.');
+          console.error(error);
+        } finally {
+          if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent = originalButtonText;
+          }
+        }
+      });
+    }
+
+    if (printAllCustomOrders) {
+      printAllCustomOrders.addEventListener('click', function() {
+        openPrintWindow(getCustomOrders(), 'Cetak Semua Pesanan Custom');
+      });
+    }
+
+    if (clearAllCustomOrders) {
+      clearAllCustomOrders.addEventListener('click', function() {
+        if (confirm('Apakah semua pesanan custom ingin dihapus?')) {
+          localStorage.removeItem(customOrderStorageKey);
+          renderCustomOrders();
+        }
+      });
+    }
+
+    renderCustomOrders();
+  </script>
+
+</body>
+
+</html>
